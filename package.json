@@ -1,0 +1,28 @@
+{
+  "name": "beupfit-bff",
+  "version": "1.0.0",
+  "description": "Projeto Next.js com conexão com a Oracle OCI.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^15.1.4",
+    "oracledb": "^6.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "eslint-config-next": "latest"
+  },
+  "engines": {
+    "node": ">=14.17.0",
+    "npm": ">=7.10.0"
+  },
+  "author": "Grupo MBA FIAP (Carolina Capitani, Israel Gomes, João Victor e Matheus Araujo)",
+  "license": "MIT"
+}
