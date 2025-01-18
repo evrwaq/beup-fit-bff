@@ -37,7 +37,7 @@ services:
       - mongo
     networks:
       - app-network
-    command: ts-node scripts/seed.ts
+    command: npx ts-node scripts/seed.ts
 
 volumes:
   mongo_data:
