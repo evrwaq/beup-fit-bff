@@ -15,6 +15,12 @@ const eslintConfig = [
       'init-declarations': 'off',
     },
   },
+  {
+    files: ['**/**/index.ts'],
+    rules: {
+      'padding-line-between-statements': 'off',
+    },
+  },
 ]
 
 export default eslintConfig
