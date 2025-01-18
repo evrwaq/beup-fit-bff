@@ -7,7 +7,7 @@ import { Response } from 'express'
 class ActuatorController {
   @Get('health')
   public healthCheck(@Res() res: Response): void {
-    res.status(HttpStatus.OK)
+    res.status(HttpStatus.OK).send()
   }
 }
 
