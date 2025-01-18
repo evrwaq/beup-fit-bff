@@ -27,6 +27,18 @@ services:
     networks:
       - app-network
 
+  seed:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/nest
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+    command: ts-node scripts/seed.ts
+
 volumes:
   mongo_data:
     driver: local
