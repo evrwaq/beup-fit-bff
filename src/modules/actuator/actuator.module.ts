@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ActuatorController } from './infra/http/controller'
+import { ActuatorController } from './controller'
 
 @Module({
   controllers: [ActuatorController],

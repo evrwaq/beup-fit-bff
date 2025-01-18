@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { Response } from 'express'
-import { ActuatorController } from '../../../../../../src/modules/actuator'
+import { ActuatorController } from '../../../../src/modules/actuator'
 
 describe('ActuatorController', () => {
   let controller: ActuatorController

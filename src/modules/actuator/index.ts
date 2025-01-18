@@ -1,2 +1,2 @@
-export * from './infra'
+export * from './controller'
 export * from './actuator.module'
