@@ -11,6 +11,8 @@ services:
       - MONGO_URI=mongodb://mongo:27017/nest
     depends_on:
       - mongo
+    networks:
+      - app-network
     volumes:
       - .:/app
     command: npm run start:prod
@@ -22,7 +24,13 @@ services:
       - '27017:27017'
     volumes:
       - mongo_data:/data/db
+    networks:
+      - app-network
 
 volumes:
   mongo_data:
     driver: local
+
+networks:
+  app-network:
+    driver: bridge
