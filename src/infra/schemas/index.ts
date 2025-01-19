@@ -1,1 +1,2 @@
-export * from './workout.schema'
+export * from './trainer.schema'
+export * from './user.schema'

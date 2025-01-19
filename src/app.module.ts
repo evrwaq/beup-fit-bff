@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { MongooseModule } from '@nestjs/mongoose'
 import { ActuatorModule } from './modules/actuator'
-import { WorkoutModule } from './modules/workout'
+import { TrainerModule } from './modules/trainer'
 
 @Module({
   imports: [
@@ -9,7 +9,7 @@ import { WorkoutModule } from './modules/workout'
       process.env.MONGO_URI || 'mongodb://localhost:27017/nest'
     ),
     ActuatorModule,
-    WorkoutModule,
+    TrainerModule,
   ],
 })
 class AppModule {}
