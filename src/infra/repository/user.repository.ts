@@ -13,6 +13,11 @@ class UserRepository {
     const users = this.userModel.find({ id: { $in: userIds } }).exec()
     return users
   }
+
+  public async findById(userId: string): Promise<User | null> {
+    const user = this.userModel.findOne({ id: userId }).exec()
+    return user
+  }
 }
 
 export { UserRepository }

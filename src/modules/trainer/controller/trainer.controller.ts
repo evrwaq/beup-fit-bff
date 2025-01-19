@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common'
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
 import { GetUsersByTrainerResponseDTO } from '../dtos/response'
+import { GetUserWorkoutResponseDTO } from '../dtos/response/getUserWorkoutResponse.dto'
 import { TrainerService } from '../services'
 
 @ApiTags('Trainer')
@@ -18,6 +19,19 @@ class TrainerController {
   ): Promise<GetUsersByTrainerResponseDTO> {
     const response = this.trainerService.getUsersByTrainer(trainerId)
     return response
+  }
+
+  @Get(':trainerId/users/:userId/workout')
+  @ApiResponse({
+    description: 'Get the current workout of a user as viewed by a trainer',
+    type: GetUserWorkoutResponseDTO,
+  })
+  public async getUserWorkout(
+    @Param('trainerId') trainerId: string,
+    @Param('userId') userId: string
+  ): Promise<GetUserWorkoutResponseDTO> {
+    const userWorkout = this.trainerService.getUserWorkout(trainerId, userId)
+    return userWorkout
   }
 }
 
