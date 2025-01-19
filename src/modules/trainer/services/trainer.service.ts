@@ -1,14 +1,19 @@
+/* eslint-disable max-lines */
 /* eslint-disable require-atomic-updates */
 /* eslint-disable functional/immutable-data */
 /* eslint-disable max-params */
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common'
 import {
   ExerciseRepository,
   TrainerRepository,
   UserRepository,
   UserWorkoutRepository,
 } from '../../../infra/repository'
-import { UpdateUserWorkoutRequestDTO } from '../dtos'
+import { AddUserWorkoutDTO, UpdateUserWorkoutRequestDTO } from '../dtos'
 import {
   GetTrainingsRespnseDTO,
   GetUsersByTrainerResponseDTO,
@@ -164,6 +169,56 @@ class TrainerService {
     }
 
     return updatedUserWorkout
+  }
+
+  public async addUserWorkout(
+    trainerId: string,
+    userId: string,
+    addUserWorkoutDto: AddUserWorkoutDTO
+  ): Promise<GetUserWorkoutResponseDTO> {
+    const trainer = await this.trainerRepository.findById(trainerId)
+    if (!trainer || !trainer.users.includes(userId)) {
+      throw new NotFoundException(
+        `Trainer ${trainerId} does not manage user ${userId}`
+      )
+    }
+
+    const existingWorkout =
+      await this.userWorkoutRepository.findByUserId(userId)
+    if (existingWorkout) {
+      throw new ConflictException(`User ${userId} already has a workout`)
+    }
+
+    const exercises = await Promise.all(
+      addUserWorkoutDto.workouts.map(async workout => {
+        const exercise = await this.exerciseRepository.findById(
+          workout.exerciseId
+        )
+        if (!exercise) {
+          throw new NotFoundException(
+            `Exercise with ID ${workout.exerciseId} not found`
+          )
+        }
+        const exerciseResponse = {
+          ...workout,
+          name: exercise.name,
+        }
+        return exerciseResponse
+      })
+    )
+
+    const newWorkout = await this.userWorkoutRepository.create({
+      userId,
+      workouts: addUserWorkoutDto.workouts,
+    })
+
+    const addedWorkout = {
+      userId: newWorkout.userId,
+      userName: trainer.users.find(user => user === userId),
+      workouts: exercises,
+    }
+
+    return addedWorkout
   }
 }
 

@@ -45,7 +45,7 @@ const seedDatabase = async () => {
         id: 'trainer1',
         name: 'Trainer One',
         email: 'trainer1@example.com',
-        users: ['user1', 'user2'],
+        users: ['user1', 'user2', 'user3'],
       },
       {
         id: 'trainer2',

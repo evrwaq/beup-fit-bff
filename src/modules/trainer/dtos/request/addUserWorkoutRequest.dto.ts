@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-class WorkoutUpdateDTO {
-  @ApiProperty({ example: 'exercise1', description: 'The ID of the exercise' })
+class WorkoutItemDTO {
+  @ApiProperty({ example: 'exercise11', description: 'The ID of the exercise' })
   public exerciseId: string
 
   @ApiProperty({ example: 12, description: 'Number of repetitions' })
@@ -14,27 +14,27 @@ class WorkoutUpdateDTO {
   public steps: number
 }
 
-class UpdateUserWorkoutRequestDTO {
+class AddUserWorkoutDTO {
   @ApiProperty({
     isArray: true,
-    type: [WorkoutUpdateDTO],
-    description: 'List of workouts to update or add',
+    type: [WorkoutItemDTO],
+    description: 'List of workouts to add',
     example: [
       {
-        exerciseId: 'exercise1',
+        exerciseId: 'exercise10',
         repetitions: 15,
-        weight: 120,
-        steps: 5,
+        weight: 90,
+        steps: 3,
       },
       {
-        exerciseId: 'exercise4',
-        repetitions: 12,
-        weight: 80,
+        exerciseId: 'exercise9',
+        repetitions: 10,
+        weight: 70,
         steps: 4,
       },
     ],
   })
-  public workouts: WorkoutUpdateDTO[]
+  public workouts: WorkoutItemDTO[]
 }
 
-export { UpdateUserWorkoutRequestDTO }
+export { AddUserWorkoutDTO }
