@@ -1,3 +1,5 @@
+/* eslint-disable require-atomic-updates */
+/* eslint-disable functional/immutable-data */
 /* eslint-disable max-params */
 import { Injectable, NotFoundException } from '@nestjs/common'
 import {
@@ -6,9 +8,12 @@ import {
   UserRepository,
   UserWorkoutRepository,
 } from '../../../infra/repository'
-import { GetUsersByTrainerResponseDTO } from '../dtos/response'
-import { GetUserWorkoutResponseDTO } from '../dtos/response/getUserWorkoutResponse.dto'
 import { UpdateUserWorkoutRequestDTO } from '../dtos'
+import {
+  GetTrainingsRespnseDTO,
+  GetUsersByTrainerResponseDTO,
+} from '../dtos/response'
+import { GetUserWorkoutResponseDTO } from '../dtos/response/getUserWorkoutResponse.dto'
 
 @Injectable()
 class TrainerService {
@@ -85,6 +90,15 @@ class TrainerService {
     return userWorkout
   }
 
+  public async getAllTrainings(): Promise<GetTrainingsRespnseDTO[]> {
+    const exercisesResponse = await this.exerciseRepository.findAll()
+    const exercises = exercisesResponse.map(exercise => ({
+      id: exercise.id,
+      name: exercise.name,
+    }))
+    return exercises
+  }
+
   public async updateUserWorkout(
     trainerId: string,
     userId: string,
@@ -112,12 +126,13 @@ class TrainerService {
         w => w.exerciseId === workout.exerciseId
       )
       if (existingWorkout) {
-        return {
+        const updatedWorkoutResponse = {
           ...existingWorkout,
           repetitions: workout.repetitions,
           weight: workout.weight,
           steps: workout.steps,
         }
+        return updatedWorkoutResponse
       } else {
         return workout
       }
@@ -128,24 +143,27 @@ class TrainerService {
 
     const workouts = await Promise.all(
       userWorkout.workouts.map(async workout => {
-        const exercise = await this.exerciseRepository.findById(
+        const exerciseResponse = await this.exerciseRepository.findById(
           workout.exerciseId
         )
-        return {
+        const exercise = {
           exerciseId: workout.exerciseId,
-          name: exercise.name,
+          name: exerciseResponse.name,
           repetitions: workout.repetitions,
           weight: workout.weight,
           steps: workout.steps,
         }
+        return exercise
       })
     )
 
-    return {
+    const updatedUserWorkout = {
       userId: userWorkout.userId,
       userName: user.name,
       workouts,
     }
+
+    return updatedUserWorkout
   }
 }
 

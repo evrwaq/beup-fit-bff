@@ -9,6 +9,13 @@ class ExerciseRepository {
     @InjectModel(Exercise.name) private readonly exerciseModel: Model<Exercise>
   ) {}
 
+  public async findAll(): Promise<Exercise[]> {
+    const exercises = this.exerciseModel
+      .find({}, { id: 1, name: 1, _id: 0 })
+      .exec()
+    return exercises
+  }
+
   public async findById(exerciseId: string): Promise<Exercise | null> {
     const exercise = this.exerciseModel.findOne({ id: exerciseId }).exec()
     return exercise
