@@ -21,6 +21,12 @@ const eslintConfig = [
       'padding-line-between-statements': 'off',
     },
   },
+  {
+    files: ['**/**/*.dto.ts'],
+    rules: {
+      'no-magic-numbers': 'off',
+    },
+  },
 ]
 
 export default eslintConfig
