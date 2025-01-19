@@ -57,43 +57,43 @@ const seedDatabase = async () => {
 
     const exercises = [
       {
-        id: 'workout1',
+        id: 'exercise1',
         name: 'Leg Press',
       },
       {
-        id: 'workout2',
+        id: 'exercise2',
         name: 'Barbell Squats',
       },
       {
-        id: 'workout3',
+        id: 'exercise3',
         name: 'Hip Thrust',
       },
       {
-        id: 'workout4',
+        id: 'exercise4',
         name: 'Bench Press',
       },
       {
-        id: 'workout5',
+        id: 'exercise5',
         name: 'Deadlift',
       },
       {
-        id: 'workout6',
+        id: 'exercise6',
         name: 'Bicep Curls',
       },
       {
-        id: 'workout7',
+        id: 'exercise7',
         name: 'Glute Bridge',
       },
       {
-        id: 'workout8',
+        id: 'exercise8',
         name: 'Plank ',
       },
       {
-        id: 'workout9',
+        id: 'exercise9',
         name: 'Running on Treadmill',
       },
       {
-        id: 'workout10',
+        id: 'exercise10',
         name: 'Kettlebell Swings',
       },
     ]
@@ -108,11 +108,13 @@ const seedDatabase = async () => {
             exerciseId: 'exercise1',
             repetitions: 12,
             weight: 100,
+            steps: 4,
           },
           {
             exerciseId: 'exercise2',
             repetitions: 10,
             weight: 80,
+            steps: 3,
           },
         ],
       },
@@ -125,11 +127,13 @@ const seedDatabase = async () => {
             exerciseId: 'exercise2',
             repetitions: 10,
             weight: 60,
+            steps: 5,
           },
           {
             exerciseId: 'exercise5',
             repetitions: 8,
             weight: 90,
+            steps: 4,
           },
         ],
       },
