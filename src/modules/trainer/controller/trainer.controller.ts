@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common'
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common'
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
+import { UpdateUserWorkoutRequestDTO } from '../dtos'
 import { GetUsersByTrainerResponseDTO } from '../dtos/response'
 import { GetUserWorkoutResponseDTO } from '../dtos/response/getUserWorkoutResponse.dto'
 import { TrainerService } from '../services'
@@ -32,6 +33,24 @@ class TrainerController {
   ): Promise<GetUserWorkoutResponseDTO> {
     const userWorkout = this.trainerService.getUserWorkout(trainerId, userId)
     return userWorkout
+  }
+
+  @Patch(':trainerId/users/:userId/workout')
+  @ApiResponse({
+    description: 'Update the workout of a user',
+    type: GetUserWorkoutResponseDTO,
+  })
+  public async updateUserWorkout(
+    @Param('trainerId') trainerId: string,
+    @Param('userId') userId: string,
+    @Body() updateUserWorkoutDTO: UpdateUserWorkoutRequestDTO
+  ): Promise<GetUserWorkoutResponseDTO> {
+    const updatedUserWorkout = this.trainerService.updateUserWorkout(
+      trainerId,
+      userId,
+      updateUserWorkoutDTO
+    )
+    return updatedUserWorkout
   }
 }
 

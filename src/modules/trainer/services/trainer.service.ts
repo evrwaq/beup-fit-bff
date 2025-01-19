@@ -8,6 +8,7 @@ import {
 } from '../../../infra/repository'
 import { GetUsersByTrainerResponseDTO } from '../dtos/response'
 import { GetUserWorkoutResponseDTO } from '../dtos/response/getUserWorkoutResponse.dto'
+import { UpdateUserWorkoutRequestDTO } from '../dtos'
 
 @Injectable()
 class TrainerService {
@@ -82,6 +83,69 @@ class TrainerService {
     }
 
     return userWorkout
+  }
+
+  public async updateUserWorkout(
+    trainerId: string,
+    userId: string,
+    updateUserWorkoutDTO: UpdateUserWorkoutRequestDTO
+  ): Promise<GetUserWorkoutResponseDTO> {
+    const trainer = await this.trainerRepository.findById(trainerId)
+    if (!trainer || !trainer.users.includes(userId)) {
+      throw new NotFoundException(
+        `Trainer ${trainerId} does not manage user ${userId}`
+      )
+    }
+
+    const userWorkout = await this.userWorkoutRepository.findByUserId(userId)
+    if (!userWorkout) {
+      throw new NotFoundException(`Workout for user ${userId} not found`)
+    }
+
+    const user = await this.userRepository.findById(userId)
+    if (!user) {
+      throw new NotFoundException(`User ${userId} not found`)
+    }
+
+    const updatedWorkouts = updateUserWorkoutDTO.workouts.map(workout => {
+      const existingWorkout = userWorkout.workouts.find(
+        w => w.exerciseId === workout.exerciseId
+      )
+      if (existingWorkout) {
+        return {
+          ...existingWorkout,
+          repetitions: workout.repetitions,
+          weight: workout.weight,
+          steps: workout.steps,
+        }
+      } else {
+        return workout
+      }
+    })
+
+    userWorkout.workouts = updatedWorkouts
+    await userWorkout.save()
+
+    const workouts = await Promise.all(
+      userWorkout.workouts.map(async workout => {
+        const exercise = await this.exerciseRepository.findById(
+          workout.exerciseId
+        )
+        return {
+          exerciseId: workout.exerciseId,
+          name: exercise.name,
+          repetitions: workout.repetitions,
+          weight: workout.weight,
+          steps: workout.steps,
+        }
+      })
+    )
+
+    return {
+      userId: userWorkout.userId,
+      userName: user.name,
+      workouts,
+    }
   }
 }
 
