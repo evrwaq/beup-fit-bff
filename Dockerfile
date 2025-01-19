@@ -1,8 +1,7 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-ENV NODE_ENV=production
-RUN npm install --legacy-peer-deps --omit=dev
+RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 RUN npm run build:seed
