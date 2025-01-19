@@ -1,21 +1,16 @@
-version: '3.9'
-
 services:
   api:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - '3001:3001'
     environment:
       - MONGO_URI=mongodb://mongo:27017/nest
     depends_on:
       - mongo
     networks:
       - app-network
-    volumes:
-      - .:/app
-    command: npm run start:prod
 
   mongo:
     image: mongo:6.0
@@ -37,7 +32,9 @@ services:
       - mongo
     networks:
       - app-network
-    command: npx ts-node scripts/seed.ts
+    command: npm run seed
+    volumes:
+      - ./scripts:/app/scripts:ro
 
 volumes:
   mongo_data:

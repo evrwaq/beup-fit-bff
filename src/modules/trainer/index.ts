@@ -1,3 +1,4 @@
 export * from './controller'
+export * from './dtos'
 export * from './services'
-export * from './workout.module'
+export * from './trainer.module'
